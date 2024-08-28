@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-700 h-screen flex flex-col">
+  <div class=" flex flex-row items-center justify-center flex-grow">
+    <div class="flex flex-col bg-white p-5 rounded-2xl drop-shadow-lg outline outline-1 outline-slate-500">
+      <h1 class="text-xl text-black font-semibold font-mono  border-b-2 pb-2 px-5">Convert Group Address</h1>
+      <div class="flex flex-col mt-2">
+        <label for="groupAddress" class="text-black font-semibold font-mono">2 Level Group Address</label>
+        <input type="text" id="groupAddress2" class="border-2 border-slate-500 rounded-md p-2 text-xs" placeholder="1/1">
+        
+        <label for="groupAddress" class="text-black font-semibold font-mono mt-2">3 Level Group Address</label>
+        <input readonly type="text" id="groupAddress3" class="border-2 border-slate-500 rounded-md p-2 text-xs" placeholder="1/1/1">
+      
+        <button id="convert" class="bg-slate-500 text-white font-semibold font-mono mt-4 p-2 rounded-md hover:bg-slate-700">Convert</button>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center text-white mb-0.5">© 2024 &nbsp;<a class="hover:text-red-400" href="https://github.com/pevecyan">Žan Pevec</a>&nbsp; All rights reserved.</div>
+  <script>
+    function newGroupAddr2(a, b) {return (a << 8) | (b & 0x7FF);}
+    function inverseGroupAddr3(addr) {
+      const a = (addr >> 11) & 0x1F;
+      const b = (addr >> 8) & 0x7;
+      const c = addr & 0xFF;
+      return { a, b, c };
+  }
+
+    document.getElementById('convert').onclick = function(){
+      try{
+        let groupAddress2Str = document.getElementById('groupAddress2').value;
+        if (!groupAddress2Str.includes('/')) throw 'Invalid Group Address';
+        if (groupAddress2Str.split('/').length != 2) throw 'Invalid Group Address';
+
+        let ga2_1 = parseInt(groupAddress2Str.split('/')[0]);
+        let ga2_2 = parseInt(groupAddress2Str.split('/')[1]);
+        let ga2 = newGroupAddr2(ga2_1, ga2_2);
+        let ga3 = inverseGroupAddr3(ga2);
+        document.getElementById('groupAddress3').value = `${ga3.a}/${ga3.b}/${ga3.c}`;
+
+      } catch(e){
+        alert('Invalid Group Address');
+        document.getElementById('groupAddress3').value = ""
+        return;
+      }
+    }
+  </script>
+</body>
+</html>
