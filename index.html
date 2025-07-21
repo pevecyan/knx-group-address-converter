@@ -22,7 +22,7 @@
   </div>
   <div class="flex justify-center text-white mb-0.5">© 2024 &nbsp;<a class="hover:text-red-400" href="https://github.com/pevecyan">Žan Pevec</a>&nbsp; All rights reserved.</div>
   <script>
-    function newGroupAddr2(a, b) {return (a << 8) | (b & 0x7FF);}
+    function newGroupAddr2(a, b) {return (a << 11) | (b & 0x7FF);}
     function inverseGroupAddr3(addr) {
       const a = (addr >> 11) & 0x1F;
       const b = (addr >> 8) & 0x7;
